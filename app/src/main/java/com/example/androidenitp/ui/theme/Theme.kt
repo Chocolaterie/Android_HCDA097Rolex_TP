@@ -140,7 +140,7 @@ fun EniTitleTextPage(title: String, paddingTitle: Dp = 120.dp){
 fun EniTextField(label: String){
     TextField(
         modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp),
-        value = "", onValueChange = {},
+        value = " ", onValueChange = {},
         label = { Text(label, style = TextStyle(color = Color.White)) },
         colors = TextFieldDefaults.colors(
             unfocusedContainerColor = Color(0x44000000),
