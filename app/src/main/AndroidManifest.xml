@@ -15,8 +15,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidEniTP"
         tools:targetApi="31">
+
+        <activity android:name=".article.ArticleListActivity"></activity>
+        <activity android:name=".auth.SignUpActivity"></activity>
+        <activity android:name=".auth.ResetPasswordActivity"></activity>
+
         <activity
-            android:name=".article.ArticleListActivity"
+            android:name=".auth.LoginActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.AndroidEniTP">

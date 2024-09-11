@@ -99,7 +99,7 @@ fun EniBackgroundPage(){
 }
 
 @Composable
-fun EniGradientButton(label: String){
+fun EniGradientButton(label: String, onClick : () -> Unit = {}){
     Button(
         border = BorderStroke(3.dp, Color(0x77FFFFFF)),
         modifier = Modifier
@@ -107,7 +107,7 @@ fun EniGradientButton(label: String){
             .padding(vertical = 10.dp)
             .clip(RoundedCornerShape(40.dp)),
         contentPadding = PaddingValues(),
-        onClick = {},
+        onClick = onClick,
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Transparent
         )
@@ -128,7 +128,9 @@ fun EniGradientButton(label: String){
 fun EniTitleTextPage(title: String, paddingTitle: Dp = 120.dp){
     Text(
         title,
-        modifier = Modifier.fillMaxWidth().padding(vertical = paddingTitle),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = paddingTitle),
         textAlign = TextAlign.Center,
         style = TextStyle(fontSize = 46.sp, color = Color(0xFF282f57),
             shadow = Shadow(color = Color(0x99000000), offset = Offset(0f, 0f), blurRadius = 10f)
@@ -139,7 +141,9 @@ fun EniTitleTextPage(title: String, paddingTitle: Dp = 120.dp){
 @Composable
 fun EniTextField(label: String){
     TextField(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 10.dp),
         value = " ", onValueChange = {},
         label = { Text(label, style = TextStyle(color = Color.White)) },
         colors = TextFieldDefaults.colors(
