@@ -17,9 +17,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -38,22 +41,11 @@ class ArticleListActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        // Liste des articles mock
-        val articles = listOf(
-            Article(
-                "Pinte de nutella",
-                "olpqsdppsqpoqssd",
-                "https://www.bridor.com/medias/sys_master/images/images/h07/hdc/8897595441182/Croissant-Courb-EDT-SourceHD-515Wx515H.png"
-            ),
-            Article(
-                "Crevete Nutella",
-                "Que des dingueries",
-                "https://dogtime.com/wp-content/uploads/sites/12/2011/01/GettyImages-653001154-e1691965000531.jpg"
-            ),
-        )
+        // Instancier view model
+        var viewModel = ListArticleViewModel();
 
         setContent {
-            ArticleListComposePage(articles)
+            ArticleListComposePage(viewModel)
         }
     }
 }
@@ -103,12 +95,18 @@ fun ArticleCard(article: Article) {
 }
 
 @Composable
-fun ArticleListComposePage(articles: List<Article>) {
+fun ArticleListComposePage(viewModel: ListArticleViewModel) {
+    // Ecouter changement de la liste des articles dans le view model
+    val articlesState by viewModel.articles.collectAsState();
+
     EniTemplatePage({
         Column(modifier = Modifier.padding(40.dp)) {
             EniTitleTextPage("La liste des articles", paddingTitle = 20.dp)
+            ElevatedButton(onClick = { viewModel.addArticleTest() },modifier = Modifier.fillMaxWidth()) {
+                Text("Ajouter un article")
+            }
             LazyColumn {
-                items(articles) { article ->
+                items(articlesState) { article ->
                     ArticleCard(article)
                 }
             }
@@ -120,11 +118,8 @@ fun ArticleListComposePage(articles: List<Article>) {
 @Composable
 fun ArticleListComposePagePreview() {
 
-    // Liste des articles mock
-    val articles = listOf(
-        Article("Pinte de nutella", "olpqsdppsqpoqssd", ""),
-        Article("Crevete Nutella", "Que des dingueries", ""),
-    )
+    // Instancier view model
+    var viewModel = ListArticleViewModel();
 
-    ArticleListComposePage(articles)
+    ArticleListComposePage(viewModel)
 }
