@@ -102,8 +102,8 @@ fun ArticleListComposePage(viewModel: ListArticleViewModel) {
     EniTemplatePage({
         Column(modifier = Modifier.padding(40.dp)) {
             EniTitleTextPage("La liste des articles", paddingTitle = 20.dp)
-            ElevatedButton(onClick = { viewModel.addArticleTest() },modifier = Modifier.fillMaxWidth()) {
-                Text("Ajouter un article")
+            ElevatedButton(onClick = { viewModel.callApi() }, modifier = Modifier.fillMaxWidth()) {
+                Text("Rafraichir")
             }
             LazyColumn {
                 items(articlesState) { article ->
