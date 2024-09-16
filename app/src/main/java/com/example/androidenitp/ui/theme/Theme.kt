@@ -139,12 +139,12 @@ fun EniTitleTextPage(title: String, paddingTitle: Dp = 120.dp){
 }
 
 @Composable
-fun EniTextField(label: String){
+fun EniTextField(label: String, value: String = "", onValueChange: (String) -> Unit = {}){
     TextField(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 10.dp),
-        value = " ", onValueChange = {},
+        value = value, onValueChange = onValueChange,
         label = { Text(label, style = TextStyle(color = Color.White)) },
         colors = TextFieldDefaults.colors(
             unfocusedContainerColor = Color(0x44000000),
