@@ -2,12 +2,13 @@ package com.example.androidenitp.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.androidenitp.api.ApiResponse
 import com.example.androidenitp.article.ArticleService
 import kotlinx.coroutines.launch
 
 class AuthViewModel : ViewModel() {
 
-    fun callApi(email: String, password : String, onApiFinish : () -> Unit) {
+    fun callApi(email: String, password : String, onApiFinish : (apiResponse: ApiResponse<String>) -> Unit) {
         // Coroutine (tâche async)
         viewModelScope.launch {
             // Appel API
@@ -15,7 +16,7 @@ class AuthViewModel : ViewModel() {
             val apiResponse = AuthService.AuthApi.authService.login(loginRequest);
 
             //
-            onApiFinish();
+            onApiFinish(apiResponse);
 
             println(apiResponse.code);
             println(apiResponse.message);

@@ -33,10 +33,12 @@ import kotlin.reflect.KClass
 
 class LoginActivity : ComponentActivity() {
 
-    lateinit var viewModel : AuthViewModel;
+    lateinit var viewModel: AuthViewModel;
 
     // Va condition l'affichage de la boite de chargement
     val showProgressDialog = MutableStateFlow<Boolean>(false)
+    val showAlertDialog = MutableStateFlow<Boolean>(false)
+    val messageAlertDialog = MutableStateFlow<String>("")
 
     //
     var email = MutableStateFlow<String>("isaac@gmail.com");
@@ -57,7 +59,9 @@ class LoginActivity : ComponentActivity() {
                 onClickSignUpBtn = { onClickSignUp() },
                 email,
                 password,
-                showProgressDialog
+                showProgressDialog,
+                showAlertDialog,
+                messageAlertDialog
             )
         }
     }
@@ -72,6 +76,9 @@ class LoginActivity : ComponentActivity() {
         // Appel api
         viewModel.callApi(email.value, password.value, {
             showProgressDialog.value = false;
+            // TODO : Afficher le message de d'information ou erreur
+            showAlertDialog.value = true;
+            messageAlertDialog.value = it.message;
         })
     }
 
@@ -93,12 +100,17 @@ fun LoginComposePage(
     onClickSignUpBtn: () -> Unit = {},
     email: MutableStateFlow<String> = MutableStateFlow<String>(""),
     password: MutableStateFlow<String> = MutableStateFlow<String>(""),
-    showProgressDialog: MutableStateFlow<Boolean>
+    showProgressDialog: MutableStateFlow<Boolean>,
+    showAlertDialog: MutableStateFlow<Boolean>,
+    messageAlertDialog: MutableStateFlow<String>,
 ) {
     val emailState by email.collectAsState();
     val passwordState by password.collectAsState();
     // Ecouter les changements du boolean
     val showProgressDialogState by showProgressDialog.collectAsState();
+
+    val showAlertDialogState by showAlertDialog.collectAsState();
+    val messageAlertDialogState by messageAlertDialog.collectAsState();
 
     EniTemplatePage({
         Box {
@@ -136,6 +148,23 @@ fun LoginComposePage(
                     }
                 }
             }
+            if (showAlertDialogState) {
+                Dialog(onDismissRequest = {
+                    showAlertDialog.value = false;
+                }) {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .background(
+                                Color.White,
+                                shape = RoundedCornerShape((10.dp))
+                            )
+                            .padding(20.dp)
+                    ) {
+                        Text(messageAlertDialogState)
+                    }
+                }
+            }
         }
     })
 }
@@ -145,6 +174,12 @@ fun LoginComposePage(
 fun LoginComposePagePreview() {
 
     val showProgressDialog = MutableStateFlow<Boolean>(false)
+    val showAlertDialog = MutableStateFlow<Boolean>(false)
+    val messageAlertDialog = MutableStateFlow<String>("")
 
-    LoginComposePage(showProgressDialog = showProgressDialog)
+    LoginComposePage(
+        showProgressDialog = showProgressDialog,
+        showAlertDialog = showAlertDialog,
+        messageAlertDialog = messageAlertDialog
+    )
 }
