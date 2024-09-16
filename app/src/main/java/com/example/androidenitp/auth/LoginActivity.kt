@@ -5,41 +5,27 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import com.example.androidenitp.article.ArticleListActivity
+import com.example.androidenitp.helper.AlertDialogHelper
+import com.example.androidenitp.helper.ProgressDialogHelper
 import com.example.androidenitp.ui.theme.EniGradientButton
 import com.example.androidenitp.ui.theme.EniTemplatePage
 import com.example.androidenitp.ui.theme.EniTextField
 import com.example.androidenitp.ui.theme.EniTitleTextPage
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlin.reflect.KClass
 
 class LoginActivity : ComponentActivity() {
 
     lateinit var viewModel: AuthViewModel;
-
-    // Va condition l'affichage de la boite de chargement
-    val showProgressDialog = MutableStateFlow<Boolean>(false)
-    val showAlertDialog = MutableStateFlow<Boolean>(false)
-    val messageAlertDialog = MutableStateFlow<String>("")
-
     //
     var email = MutableStateFlow<String>("isaac@gmail.com");
     var password = MutableStateFlow<String>("password");
@@ -59,9 +45,6 @@ class LoginActivity : ComponentActivity() {
                 onClickSignUpBtn = { onClickSignUp() },
                 email,
                 password,
-                showProgressDialog,
-                showAlertDialog,
-                messageAlertDialog
             )
         }
     }
@@ -72,13 +55,11 @@ class LoginActivity : ComponentActivity() {
         startActivity(intent);
         */
         // Afficher la popup
-        showProgressDialog.value = true;
+        ProgressDialogHelper.Singleton.progressDialogHelper.showProgressDialog();
         // Appel api
         viewModel.callApi(email.value, password.value, {
-            showProgressDialog.value = false;
-            // TODO : Afficher le message de d'information ou erreur
-            showAlertDialog.value = true;
-            messageAlertDialog.value = it.message;
+            ProgressDialogHelper.Singleton.progressDialogHelper.closeProgressDialog()
+            AlertDialogHelper.Singleton.alertDialogHelper.showAlert(it.message)
         })
     }
 
@@ -100,17 +81,10 @@ fun LoginComposePage(
     onClickSignUpBtn: () -> Unit = {},
     email: MutableStateFlow<String> = MutableStateFlow<String>(""),
     password: MutableStateFlow<String> = MutableStateFlow<String>(""),
-    showProgressDialog: MutableStateFlow<Boolean>,
-    showAlertDialog: MutableStateFlow<Boolean>,
-    messageAlertDialog: MutableStateFlow<String>,
 ) {
     val emailState by email.collectAsState();
     val passwordState by password.collectAsState();
     // Ecouter les changements du boolean
-    val showProgressDialogState by showProgressDialog.collectAsState();
-
-    val showAlertDialogState by showAlertDialog.collectAsState();
-    val messageAlertDialogState by messageAlertDialog.collectAsState();
 
     EniTemplatePage({
         Box {
@@ -127,44 +101,8 @@ fun LoginComposePage(
                     EniGradientButton("Je veux m'inscrire", onClickSignUpBtn)
                 }
             }
-            if (showProgressDialogState) {
-                Dialog(onDismissRequest = {
-                    showProgressDialog.value = false;
-                }) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier.background(
-                            Color.White,
-                            shape = RoundedCornerShape((10.dp))
-                        )
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(20.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            CircularProgressIndicator()
-                            Text("Chargement en cours..")
-                        }
-                    }
-                }
-            }
-            if (showAlertDialogState) {
-                Dialog(onDismissRequest = {
-                    showAlertDialog.value = false;
-                }) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier
-                            .background(
-                                Color.White,
-                                shape = RoundedCornerShape((10.dp))
-                            )
-                            .padding(20.dp)
-                    ) {
-                        Text(messageAlertDialogState)
-                    }
-                }
-            }
+            ProgressDialogHelper.Singleton.progressDialogHelper.renderProgress()
+            AlertDialogHelper.Singleton.alertDialogHelper.render()
         }
     })
 }
@@ -172,14 +110,5 @@ fun LoginComposePage(
 @Preview(showBackground = true)
 @Composable
 fun LoginComposePagePreview() {
-
-    val showProgressDialog = MutableStateFlow<Boolean>(false)
-    val showAlertDialog = MutableStateFlow<Boolean>(false)
-    val messageAlertDialog = MutableStateFlow<String>("")
-
-    LoginComposePage(
-        showProgressDialog = showProgressDialog,
-        showAlertDialog = showAlertDialog,
-        messageAlertDialog = messageAlertDialog
-    )
+    LoginComposePage()
 }
