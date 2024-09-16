@@ -17,7 +17,7 @@ class ListArticleViewModel : ViewModel() {
 
             // Si le code metier est 200 donc succès alors récupérer les articles dans data
             if (apiResponse.code.equals("200")){
-                articles.value = apiResponse.data;
+                articles.value = apiResponse.data!!;
             }
 
         }

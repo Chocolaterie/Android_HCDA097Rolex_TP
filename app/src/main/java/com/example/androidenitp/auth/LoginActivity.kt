@@ -21,9 +21,14 @@ import kotlin.reflect.KClass
 
 class LoginActivity : ComponentActivity() {
 
+    lateinit var viewModel : AuthViewModel;
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        // instancier le view model
+        viewModel = AuthViewModel();
 
         // Version 1
         setContent {
@@ -33,28 +38,14 @@ class LoginActivity : ComponentActivity() {
                 onClickSignUpBtn = { onClickSignUp() }
             )
         }
-
-        // Version Generique
-        /*
-        setContent {
-            LoginComposePage(onClickLoginBtn = { startActivityGeneric(ArticleListActivity::class) },
-                onClickResetBtn = { startActivityGeneric(LoginActivity::class) },
-                onClickSignUpBtn = { startActivityGeneric(ResetPasswordActivity::class) }
-            )
-        }
-        */
     }
 
-    // Version Generique
-    /*
-    fun <T : Any> startActivityGeneric(classe : KClass<T>){
-        val intent = Intent(this, classe.java);
-        startActivity(intent);
-    }
-    */
     fun onClickLogin() {
+        /*
         val intent = Intent(this, ArticleListActivity::class.java);
         startActivity(intent);
+        */
+        viewModel.callApi("isaac@gmail.com", "passwor")
     }
 
     fun onClickResetPassword() {

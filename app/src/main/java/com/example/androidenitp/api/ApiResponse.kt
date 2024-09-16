@@ -8,5 +8,5 @@ package com.example.androidenitp.api
  * Quand T => Boolean du coup data devient => data : Boolean
  * Etc...
  */
-class ApiResponse<T>(var code : String, var message : String, var data : T) {
+class ApiResponse<T>(var code : String, var message : String, var data : T?) {
 }
