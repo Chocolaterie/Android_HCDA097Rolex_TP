@@ -7,12 +7,15 @@ import kotlinx.coroutines.launch
 
 class AuthViewModel : ViewModel() {
 
-    fun callApi(email: String, password : String) {
+    fun callApi(email: String, password : String, onApiFinish : () -> Unit) {
         // Coroutine (tâche async)
         viewModelScope.launch {
             // Appel API
             val loginRequest = LoginRequest(email, password);
             val apiResponse = AuthService.AuthApi.authService.login(loginRequest);
+
+            //
+            onApiFinish();
 
             println(apiResponse.code);
             println(apiResponse.message);
