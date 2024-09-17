@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -52,6 +53,10 @@ fun MovieDetailPage(
                 Column {
                     Spacer(Modifier.weight(1.5f))
                     Column(Modifier.padding(20.dp)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            MovieIMDBTag(7.0f)
+                            MovieReviewComponent(6.9f)
+                        }
                         Text("The Black phone", fontSize = 28.sp, color = Color.White)
                         Row(Modifier.padding(vertical = 7.dp)) {
                             MovieTag("Horror")
