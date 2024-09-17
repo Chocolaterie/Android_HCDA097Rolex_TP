@@ -55,7 +55,7 @@ class LoginActivity : ComponentActivity() {
         startActivity(intent);
         */
         // Afficher la popup
-        ProgressDialogHelper.Singleton.progressDialogHelper.showProgressDialog();
+        ProgressDialogHelper.Singleton.progressDialogHelper.showProgressDialog()
         // Appel api
         viewModel.callApi(email.value, password.value, {
             ProgressDialogHelper.Singleton.progressDialogHelper.closeProgressDialog()

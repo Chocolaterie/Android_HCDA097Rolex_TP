@@ -18,15 +18,25 @@ class AuthViewModel : ViewModel() {
             //
             onApiFinish(apiResponse);
 
-            println(apiResponse.code);
-            println(apiResponse.message);
-
             // Si le code metier est 200 donc succès alors récupérer les articles dans data
             if (apiResponse.code.equals("200")){
                 // articles.value = apiResponse.data;
                 println("L'api à fonctionnée avec le code 200")
+                // Stocker le token dans un static
+                AuthContext.token = apiResponse.data!!;
             }
 
+        }
+    }
+
+    fun callApiSignUp(signUpRequest: SignUpRequest, onApiFinish : (apiResponse: ApiResponse<User>) -> Unit) {
+        // Coroutine (tâche async)
+        viewModelScope.launch {
+            // Appel API
+            val apiResponse = AuthService.AuthApi.authService.signUp(signUpRequest);
+
+            // Callback
+            onApiFinish(apiResponse);
         }
     }
 }
