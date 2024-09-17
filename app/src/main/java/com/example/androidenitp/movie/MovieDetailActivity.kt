@@ -9,6 +9,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -21,6 +22,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.androidenitp.R
 import com.example.androidenitp.ui.theme.AndroidEniTPTheme
 import com.example.androidenitp.ui.theme.EniBackgroundPage
@@ -42,35 +45,22 @@ fun MovieDetailPage(
 ) {
     AndroidEniTPTheme {
         Scaffold { innerPadding ->
-            Box(modifier = Modifier.padding(innerPadding).background(Color.Black)) {
+            Box(modifier = Modifier
+                .padding(innerPadding)
+                .background(Color.Black)) {
+                MovieBackgroundComponent()
                 Column {
-                    Box(modifier = Modifier.weight(1.5f)) {
-                        Image(
-                            painter = painterResource(id = R.drawable.movie_background),
-                            contentDescription = "",
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier.fillMaxSize()
-                        )
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(
-                                    Brush.verticalGradient(
-                                        colors = listOf(
-                                            Color(0x00000000),
-                                            Color(0x00000000),
-                                            Color(0xFF000000)
-                                        )
-                                    )
-                                )
-                        ) {
-
+                    Spacer(Modifier.weight(1.5f))
+                    Column(Modifier.padding(20.dp)) {
+                        Text("The Black phone", fontSize = 28.sp, color = Color.White)
+                        Row(Modifier.padding(vertical = 7.dp)) {
+                            MovieTag("Horror")
+                            MovieTag("Thriller")
+                            MovieTag("Supernatural")
                         }
+                        Text(movieLoremDesc, color = Color.White)
                     }
-
-                    Spacer(modifier = Modifier.weight(1f))
                 }
-                Column { Text("TODO") }
             }
         }
     }
