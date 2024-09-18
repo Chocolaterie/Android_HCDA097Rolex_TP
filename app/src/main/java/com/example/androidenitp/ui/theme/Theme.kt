@@ -89,6 +89,14 @@ fun EniTemplatePage(content: @Composable () -> Unit){
 }
 
 @Composable
+fun FragmentTemplatePage(content: @Composable () -> Unit){
+    Box() {
+        EniBackgroundPage()
+        content()
+    }
+}
+
+@Composable
 fun EniBackgroundPage(){
     Image(
         painter = painterResource(id = R.drawable.background_1),
