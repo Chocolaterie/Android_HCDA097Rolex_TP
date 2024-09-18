@@ -18,6 +18,9 @@ interface AuthService {
     @POST("signup")
     suspend fun signUp(@Body signUpRequest: SignUpRequest) : ApiResponse<User>
 
+    @POST("reset-password")
+    suspend fun resetPassword(@Body resetPasswordRequest: ResetPasswordRequest) : ApiResponse<String>
+
     object AuthApi {
         val authService : AuthService by lazy { retrofit.create(AuthService::class.java) }
     }

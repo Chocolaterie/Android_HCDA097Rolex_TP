@@ -39,4 +39,16 @@ class AuthViewModel : ViewModel() {
             onApiFinish(apiResponse);
         }
     }
+
+    fun callApiResetPassword(email: String, onApiFinish : (apiResponse: ApiResponse<String>) -> Unit) {
+        // Coroutine (tâche async)
+        viewModelScope.launch {
+            // Appel API
+            val resetPasswordRequest = ResetPasswordRequest(email)
+            val apiResponse = AuthService.AuthApi.authService.resetPassword(resetPasswordRequest)
+
+            // Callback
+            onApiFinish(apiResponse);
+        }
+    }
 }
