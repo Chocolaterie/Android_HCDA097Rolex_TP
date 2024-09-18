@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.androidenitp.auth.AuthViewModel
+import com.example.androidenitp.auth.LoginComponent
 import com.example.androidenitp.auth.ResetPasswordComponent
 import com.example.androidenitp.ui.theme.AndroidEniTPTheme
 import com.example.androidenitp.ui.theme.FragmentTemplatePage
@@ -43,11 +44,16 @@ fun NavActivityPage() {
                     .padding(innerPadding)
                     .fillMaxSize(),
                 navController = navController,
-                startDestination = "reset-password"
+                startDestination = "login"
             ) {
                 composable("reset-password") {
                     FragmentTemplatePage({
                         ResetPasswordComponent(viewModel)
+                    })
+                }
+                composable("login") {
+                    FragmentTemplatePage({
+                        LoginComponent(viewModel)
                     })
                 }
             }

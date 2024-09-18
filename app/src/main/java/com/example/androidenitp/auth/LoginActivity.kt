@@ -26,9 +26,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 class LoginActivity : ComponentActivity() {
 
     lateinit var viewModel: AuthViewModel;
-    //
-    var email = MutableStateFlow<String>("isaac@gmail.com");
-    var password = MutableStateFlow<String>("password");
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,27 +37,11 @@ class LoginActivity : ComponentActivity() {
         // Version 1
         setContent {
             LoginComposePage(
-                onClickLoginBtn = { onClickLogin() },
+                viewModel,
                 onClickResetBtn = { onClickResetPassword() },
                 onClickSignUpBtn = { onClickSignUp() },
-                email,
-                password,
             )
         }
-    }
-
-    fun onClickLogin() {
-        /*
-        val intent = Intent(this, ArticleListActivity::class.java);
-        startActivity(intent);
-        */
-        // Afficher la popup
-        ProgressDialogHelper.Singleton.progressDialogHelper.showProgressDialog()
-        // Appel api
-        viewModel.callApi(email.value, password.value, {
-            ProgressDialogHelper.Singleton.progressDialogHelper.closeProgressDialog()
-            AlertDialogHelper.Singleton.alertDialogHelper.showAlert(it.message)
-        })
     }
 
     fun onClickResetPassword() {
@@ -76,39 +57,20 @@ class LoginActivity : ComponentActivity() {
 
 @Composable
 fun LoginComposePage(
-    onClickLoginBtn: () -> Unit = {},
+    viewModel: AuthViewModel,
     onClickResetBtn: () -> Unit = {},
     onClickSignUpBtn: () -> Unit = {},
-    email: MutableStateFlow<String> = MutableStateFlow<String>(""),
-    password: MutableStateFlow<String> = MutableStateFlow<String>(""),
 ) {
-    val emailState by email.collectAsState();
-    val passwordState by password.collectAsState();
-    // Ecouter les changements du boolean
 
     EniTemplatePage({
-        Box {
-            Column(modifier = Modifier.padding(40.dp)) {
-                EniTitleTextPage("Login")
-                EniTextField("Email", value = emailState, onValueChange = { email.value = it })
-                EniTextField(
-                    "Mot de passe",
-                    value = passwordState,
-                    onValueChange = { password.value = it })
-                EniGradientButton("Connexion", onClickLoginBtn)
-                Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.Bottom) {
-                    EniGradientButton("Reset Password", onClickResetBtn)
-                    EniGradientButton("Je veux m'inscrire", onClickSignUpBtn)
-                }
-            }
-            ProgressDialogHelper.Singleton.progressDialogHelper.renderProgress()
-            AlertDialogHelper.Singleton.alertDialogHelper.render()
-        }
+        LoginComponent(viewModel, onClickResetBtn, onClickSignUpBtn)
     })
 }
 
 @Preview(showBackground = true)
 @Composable
 fun LoginComposePagePreview() {
-    LoginComposePage()
+    val viewModel = AuthViewModel()
+
+    LoginComposePage(viewModel)
 }
