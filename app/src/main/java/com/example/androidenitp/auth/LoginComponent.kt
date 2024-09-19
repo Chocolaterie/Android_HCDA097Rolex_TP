@@ -31,7 +31,7 @@ fun onClickLogin(email: String, password: String, viewModel: AuthViewModel) {
 }
 
 @Composable
-fun LoginComponent(viewModel: AuthViewModel, onClickResetBtn: () -> Unit = {}, onClickSignUpBtn: () -> Unit = {} ) {
+fun LoginComponent(viewModel: AuthViewModel, onClickResetBtn: () -> Unit = {}, onClickSignUpBtn: () -> Unit = {}) {
     var email = MutableStateFlow<String>("isaac@gmail.com");
     var password = MutableStateFlow<String>("password");
 

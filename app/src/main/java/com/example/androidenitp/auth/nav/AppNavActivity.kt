@@ -13,11 +13,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.androidenitp.article.ArticleListComponent
+import com.example.androidenitp.article.ListArticleViewModel
 import com.example.androidenitp.auth.AuthViewModel
 import com.example.androidenitp.auth.LoginComponent
 import com.example.androidenitp.auth.ResetPasswordComponent
+import com.example.androidenitp.auth.SignUpComponent
+import com.example.androidenitp.auth.SignUpRequest
 import com.example.androidenitp.ui.theme.AndroidEniTPTheme
 import com.example.androidenitp.ui.theme.FragmentTemplatePage
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class AppNavActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +38,9 @@ class AppNavActivity : ComponentActivity() {
 @Composable
 fun NavActivityPage() {
     var viewModel = AuthViewModel();
+    var viewModelArticle = ListArticleViewModel();
+
+    val signUpRequest = MutableStateFlow(SignUpRequest());
 
     // NavController ecoutable
     val navController = rememberNavController()
@@ -44,7 +52,7 @@ fun NavActivityPage() {
                     .padding(innerPadding)
                     .fillMaxSize(),
                 navController = navController,
-                startDestination = "login"
+                startDestination = "articles"
             ) {
                 composable("reset-password") {
                     FragmentTemplatePage({
@@ -54,6 +62,16 @@ fun NavActivityPage() {
                 composable("login") {
                     FragmentTemplatePage({
                         LoginComponent(viewModel)
+                    })
+                }
+                composable("signup") {
+                    FragmentTemplatePage({
+                        SignUpComponent(signUpRequest, viewModel)
+                    })
+                }
+                composable("articles") {
+                    FragmentTemplatePage({
+                        ArticleListComponent(viewModelArticle)
                     })
                 }
             }

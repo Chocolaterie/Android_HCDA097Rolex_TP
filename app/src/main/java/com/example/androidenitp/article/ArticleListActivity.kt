@@ -51,66 +51,9 @@ class ArticleListActivity : ComponentActivity() {
 }
 
 @Composable
-fun ArticleCard(article: Article) {
-    ElevatedCard(
-        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 16.dp)
-    ) {
-        Box(modifier = Modifier.height(164.dp)) {
-            AsyncImage(
-                model = article.imgPath,
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
-            )
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Bottom
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(color = Color(0x55000000))
-                ) {
-                    Text(
-                        article.title,
-                        modifier = Modifier.padding(horizontal = 10.dp),
-                        style = TextStyle(
-                            color = Color.White,
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    )
-                    Text(
-                        article.desc,
-                        modifier = Modifier.padding(10.dp),
-                        style = TextStyle(color = Color.White)
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
 fun ArticleListComposePage(viewModel: ListArticleViewModel) {
-    // Ecouter changement de la liste des articles dans le view model
-    val articlesState by viewModel.articles.collectAsState();
-
     EniTemplatePage({
-        Column(modifier = Modifier.padding(40.dp)) {
-            EniTitleTextPage("La liste des articles", paddingTitle = 20.dp)
-            ElevatedButton(onClick = { viewModel.callApi() }, modifier = Modifier.fillMaxWidth()) {
-                Text("Rafraichir")
-            }
-            LazyColumn {
-                items(articlesState) { article ->
-                    ArticleCard(article)
-                }
-            }
-        }
+        ArticleListComponent(viewModel)
     })
 }
 
